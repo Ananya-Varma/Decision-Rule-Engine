@@ -26,9 +26,9 @@ MAX_CLASS_10_SCORE = 100
 CO_BORROWER_ENTITIES = ["Salaried", "Professional", "Self Employed", "Retired"]
 
 # Location of Co-Borrower
-CO_BORROWER_LOCATIONS = ["As per Location List", "India"]
+CO_BORROWER_LOCATIONS = ["As per Location List", "Anywhere in India or abroad with one Local Coborrower. Repayment from ECS or DDM facility"]
 
-# Accomodation of Co-Borrower
+# Accommodation of Co-Borrower
 CO_BORROWER_ACCOMMODATIONS = ["KYC Norms to be Met", "Self Owned, Company or government provided (no minimum stay required) or Self rental with 3 years stability"]
 
 # Relation with Main Co-Borrower
