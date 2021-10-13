@@ -4,22 +4,23 @@
 COURSES = ["Engineering", "Information Technology", "Computer Science", "Biotechnology", "Architecture", "Other"]
 
 # GRE Scores to be validated
-GRE_CUTOFFS = [320, 300, 290]
+MAX_GRE_SCORE = 340
 
 # TOEFL Scores to be validated
-TOEFL_CUTOFFS = [95, 85, 80]
+MAX_TOEFL_SCORE = 100
 
 # IELTS Scores to be validated
-IELTS_CUTOFFS = [6, 5]
+MAX_IELTS_SCORE = 10
 
 # Maximum Graduation Time
 MAX_TIME_TO_GRADUATE = 5
 
 # UG Performance Cutoff
-UG_CUTOFF = 65
+MAX_UG_SCORE = 100
 
 # Academic performance to be validated
-CLASS_12_AND_10_CUTOFF = 65
+MAX_CLASS_12_SCORE = 100
+MAX_CLASS_10_SCORE = 100
 
 # Entity of Co-Borrower
 CO_BORROWER_ENTITIES = ["Salaried", "Professional", "Self Employed", "Retired"]
@@ -34,10 +35,10 @@ CO_BORROWER_ACCOMMODATIONS = ["KYC Norms to be Met", "Self Owned, Company or gov
 CO_BORROWER_RELATIONSHIP = ["Father", "Mother", "Spouse", "Brother", "Other Blood Relative"]
 
 # FOIR Limit
-FOIR_LIMIT = 65
+MAX_FOIR_LIMIT = 100
 
 # IIR Limit
-IIR_LIMIT = 65
+MAX_IIR_LIMIT = 100
 
 # Income Profiles to be validated
 INCOME_PROFILES = [{"Monthly_Income": 15000, "ITR": 150000}, {"Monthly_Income": 25000, "ITR": 200000}]
