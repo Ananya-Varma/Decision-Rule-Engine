@@ -3,24 +3,31 @@ from applicant import Applicant
 from products import *
 
 
-def print_products(eligible_products):
+def print_products(eligible_products, monthy_income):
     for product in eligible_products:
         print()
         print("Product Name: " + product["Product_Name"])
-        print("Credit Limit: " + product["Credit_Limit"])
-        print("Maximum Repayment Term: " + str(product["Max_Term"]) + " months")
-        print("Grace: " + str(product["Grace"]) + " months")
-        print("Prepayment: " + product["Prepayment"])
-        print("Collateral: " + product["Collateral"])
-        print()
-        print("Details of the product are as follows: ")
-        print()
+        print("Loan Type: Unsecured")
+        print("Loan Amount: " + product["Credit_Limit"])
+        print("Study Period: " + str(product["Max_Term"]) + " months")
+        print("Grace Period: " + str(product["Grace"]) + " months")
+        print("EMI Period: 1 month")
+        print("Interest Rate: " + str(product["Interest Rate"]) + "%")
+        # print("Prepayment: " + product["Prepayment"])
+        # print("Collateral: " + product["Collateral"])
+        print("FOIR: " + str(int(product["EMI"]/monthy_income*100)) + "%")
+        print("IIR: " + str(int(product["EMI"] / monthy_income * 100)) + "%")
+        print("Partial Interest Payment: " + product["Partial Interest"])
+        print("EMI Amount: INR " + str(product["EMI"]))
 
-        for i in range(len(product["Product_Info"])):
-            print(str(i + 1) + "." + "  " + product["Product_Info"][i])
+        # print("Details of the product are as follows: ")
+        # print()
 
-        print()
-        print("Moratorium Option: " + product["Moratorium"])
+        # for i in range(len(product["Product_Info"])):
+        #    print(str(i + 1) + "." + "  " + product["Product_Info"][i])
+
+        # print()
+        # print("Moratorium Option: " + product["Moratorium"])
 
 
 def main():
@@ -35,7 +42,7 @@ def main():
     gre_score = input("Enter your GRE Score (Key in 0 if not applicable): ")
     toefl_score = input("Enter your TOEFL Score (Key in 0 if not applicable): ")
     ielts_score = input("Enter your IELTS Score (Key in 0 if not applicable): ")
-    grad_time = input("Enter time remaining for your graduation (in years): ")
+    grad_time = input("Enter education gap (in years): ")
     ug_score = input("Enter your Undergraduate CGPA as percentage: ")
     class_12_score = input("Enter your Class 12th percentage: ")
     class_10_score = input("Enter your Class 10th percentage: ")
@@ -69,8 +76,8 @@ def main():
     co_borrower_relationship = input("Your choice: ")
 
     print()
-    foir = input("Enter your FOIR as a percentage (Key in 0 if not applicable): ")
-    iir = input("Enter your IIR as a percentage (Key in 0 if not applicable): ")
+    foir = 0 # input("Enter your FOIR as a percentage (Key in 0 if not applicable): ")
+    iir = 0 # input("Enter your IIR as a percentage (Key in 0 if not applicable): ")
     monthly_income = input("Enter Monthly Income in INR (Clubbing allowed for Father/Mother): ")
     itr = input("Enter your Annual ITR amount in INR: ")
     cibil_status = input("Enter your CIBIL Hit Status (YES or NO): ")
@@ -141,10 +148,11 @@ def main():
     else:
         print()
         print("Dear " + applicant.name + ", you are eligible for our following loan offerings")
-        print_products(eligible_products)
+        print_products(eligible_products, monthly_income)
 
     print()
     print("********* Thank you for choosing to work with Kuhoo! *********")
+    print()
 
 
 if __name__ == "__main__":
