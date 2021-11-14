@@ -1,7 +1,7 @@
 """Parameters to be validated for loan eligibility"""
 
 # Courses to be validated from the given list
-COURSES = ["Engineering", "Information Technology", "Computer Science", "Biotechnology", "Architecture", "Other"]
+COURSES = ["Engineering", "Information Technology", "Computer Science", "Biotechnology", "Architecture", "Economics"]
 
 # GRE Scores to be validated
 MAX_GRE_SCORE = 340
@@ -13,7 +13,7 @@ MAX_TOEFL_SCORE = 100
 MAX_IELTS_SCORE = 10
 
 # Maximum Graduation Time
-MAX_TIME_TO_GRADUATE = 5
+MAX_DELAY_IN_GRAD = 2
 
 # UG Performance Cutoff
 MAX_UG_SCORE = 100
@@ -50,4 +50,7 @@ CIBIL_CONDITIONS = ["Asset Product - Once 30 DPD in the last 12 months with no d
                     "Credit Cards - Write off up to 5k or settlement with nil outstanding balance - can be waived provided there is satisfactory PL repayment track record of at least 12 months with  nil bounces.",
                     "Asset Product - Once 30 DPD in the last 6 months with no delay in last 3 months in any Secured Asset Product(HL/LAP/Auto, etc).",
                     "Asset Product - No Write Off in Secured Asset Product (HL/LAP/Auto, etc)"]
+
+# Loan Repayment Options
+REPAYMENT_OPTIONS = ["PEMI Option", "EMI Option", "Partial Interest Option"]
 

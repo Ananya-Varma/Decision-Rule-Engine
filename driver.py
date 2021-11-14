@@ -1,33 +1,53 @@
 """ Driver Code for Interacting with the Applicant """
 from applicant import Applicant
 from products import *
+from utils import *
 
 
-def print_products(eligible_products, monthy_income):
-    for product in eligible_products:
-        print()
-        print("Product Name: " + product["Product_Name"])
-        print("Loan Type: Unsecured")
-        print("Loan Amount: " + product["Credit_Limit"])
-        print("Study Period: " + str(product["Max_Term"]) + " months")
-        print("Grace Period: " + str(product["Grace"]) + " months")
-        print("EMI Period: 1 month")
-        print("Interest Rate: " + str(product["Interest Rate"]) + "%")
-        # print("Prepayment: " + product["Prepayment"])
-        # print("Collateral: " + product["Collateral"])
-        print("FOIR: " + str(int(product["EMI"]/monthy_income*100)) + "%")
-        print("IIR: " + str(int(product["EMI"] / monthy_income * 100)) + "%")
-        print("Partial Interest Payment: " + product["Partial Interest"])
-        print("EMI Amount: INR " + str(product["EMI"]))
+def print_products(applicant, eligible_products):
 
-        # print("Details of the product are as follows: ")
-        # print()
+    if applicant.ineligible_all or applicant.only_emi:
+        product_list = PRODUCT_LIST[:1]
 
-        # for i in range(len(product["Product_Info"])):
-        #    print(str(i + 1) + "." + "  " + product["Product_Info"][i])
+    else:
+        product_list = eligible_products[:1]
 
-        # print()
-        # print("Moratorium Option: " + product["Moratorium"])
+    if applicant.only_emi:
+
+        for product in product_list:
+            print()
+            print("Product Name: " + product["Product_Name"])
+            print("Loan Type: Unsecured")
+            print("Loan Repayment Options: ")
+            print()
+
+            print_repayment_option_2(product, applicant)
+
+    elif applicant.ineligible_all:
+        print("(Loan Approval Subject to Location List of Kuhoo)")
+        for product in product_list:
+            print()
+            print("Product Name: " + product["Product_Name"])
+            print("Loan Type: Unsecured")
+            print("Loan Repayment Options: ")
+            print()
+
+            print_repayment_option_3(product, applicant)
+
+    else:
+
+        for product in product_list:
+            print()
+            print("Product Name: " + product["Product_Name"])
+            print("Loan Type: Unsecured")
+            print("Loan Repayment Options: ")
+            print()
+
+            print_repayment_option_1(product, applicant)
+            print_repayment_option_2(product, applicant)
+
+            if applicant.partial_interest_amount >= 2000:
+                print_repayment_option_3(product, applicant)
 
 
 def main():
@@ -38,11 +58,52 @@ def main():
     print()
 
     name = input("Enter your name: ")
-    course = input("Enter your course name: ")
-    gre_score = input("Enter your GRE Score (Key in 0 if not applicable): ")
-    toefl_score = input("Enter your TOEFL Score (Key in 0 if not applicable): ")
-    ielts_score = input("Enter your IELTS Score (Key in 0 if not applicable): ")
-    grad_time = input("Enter education gap (in years): ")
+    print()
+    print("Please select the course for which you wish to apply for loan: ")
+    print()
+    print("1." + '\t' + "Masters in Science (MS, MTech...)")
+    print("2." + '\t' + "Masters in Management (MBA, MIM...)")
+    print()
+    pgcourse = input("Your choice: ")
+
+    pgcourse = int(pgcourse)
+
+    if pgcourse == 1:
+
+        course = input("Enter your course name: ")
+        gre_score = input("Enter your GRE Score (Key in 0 if not applicable): ")
+        toefl_score = input("Enter your TOEFL Score (Key in 0 if not applicable): ")
+        sat_score = 0
+
+        if int(toefl_score) == 0:
+            ielts_score = input("Enter your IELTS Score (Key in 0 if not applicable): ")
+
+        else:
+            ielts_score = 0
+
+    elif pgcourse == 2:
+
+        course = ""
+        sat_score = input("Enter your SAT Score (Key in 0 if not applicable): ")
+        toefl_score = input("Enter your TOEFL Score (Key in 0 if not applicable): ")
+        sat_score = 0
+
+        if int(toefl_score) == 0:
+            ielts_score = input("Enter your IELTS Score (Key in 0 if not applicable): ")
+
+        else:
+            ielts_score = 0
+
+        gre_score = 0
+
+    else:
+
+        print("Invalid Input! Please key in a valid input")
+        return
+
+    grad_time = input("Delay in education (in years): ")
+    study_period = input("Enter your study period (in months): ")
+    grace_period = input("Enter your grace period (in months): ")
     ug_score = input("Enter your Undergraduate CGPA as percentage: ")
     class_12_score = input("Enter your Class 12th percentage: ")
     class_10_score = input("Enter your Class 10th percentage: ")
@@ -76,25 +137,47 @@ def main():
     co_borrower_relationship = input("Your choice: ")
 
     print()
-    foir = 0 # input("Enter your FOIR as a percentage (Key in 0 if not applicable): ")
-    iir = 0 # input("Enter your IIR as a percentage (Key in 0 if not applicable): ")
-    monthly_income = input("Enter Monthly Income in INR (Clubbing allowed for Father/Mother): ")
+    # foir = 0 # input("Enter your FOIR as a percentage (Key in 0 if not applicable): ")
+    # iir = 0 # input("Enter your IIR as a percentage (Key in 0 if not applicable): ")
+
+    if int(co_borrower_entity) == 1:
+        monthly_income = input("Enter Monthly Income in INR (Clubbing allowed for Father/Mother): ")
+
+    elif int(co_borrower_entity) == 4:
+        monthly_income = input("Enter Monthly Pension Income in INR: ")
+
+    else:
+        monthly_income = int(input("Enter Gross Annual Income in INR: "))/12
+
     itr = input("Enter your Annual ITR amount in INR: ")
+    partial_interest_amount = input("Enter your serviceable partial interest amount (per month): ")
+    print()
     cibil_status = input("Enter your CIBIL Hit Status (YES or NO): ")
     print()
 
-    cibil_grid = -1
     if cibil_status == "YES":
+        personal_loan = input("Enter your monthly EMI amount on personal loan: ")
+        home_loan = input("Enter your monthly EMI amount on home loan: ")
+
         print("Enter any one of the CIBIL Hit condition that you satisfy: ")
         for i in range(len(CIBIL_CONDITIONS)):
             print(str(i + 1) + '\t' + CIBIL_CONDITIONS[i])
         print("If none of the conditions apply, press any key")
         cibil_grid = input("Your choice: ")
 
+    else:
+        cibil_grid = -1
+        personal_loan = 0
+        home_loan = 0
+
+    pgcourse = int(pgcourse)
     gre_score = int(gre_score)
     toefl_score = int(toefl_score)
     ielts_score = int(ielts_score)
+    sat_score = int(sat_score)
     grad_time = int(grad_time)
+    study_period = int(study_period)
+    grace_period = int(grace_period)
     ug_score = int(ug_score)
     class_12_score = int(class_12_score)
     class_10_score = int(class_10_score)
@@ -102,11 +185,12 @@ def main():
     co_borrower_location = int(co_borrower_location)
     co_borrower_accommodation = int(co_borrower_accommodation)
     co_borrower_relationship = int(co_borrower_relationship)
-    foir = int(foir)
-    iir = int(iir)
     monthly_income = int(monthly_income)
     itr = int(itr)
+    partial_interest_amount = int(partial_interest_amount)
     cibil_grid = int(cibil_grid)
+    personal_loan = int(personal_loan)
+    home_loan = int(home_loan)
 
     if co_borrower_entity <= len(CO_BORROWER_ENTITIES):
         co_borrower_entity = CO_BORROWER_ENTITIES[co_borrower_entity - 1]
@@ -134,13 +218,13 @@ def main():
 
     income_profile = {"monthly_income": monthly_income, "itr": itr}
 
-    applicant = Applicant(name, course, gre_score, toefl_score, ielts_score, grad_time, ug_score, class_12_score,
+    applicant = Applicant(name, pgcourse, course, gre_score, toefl_score, ielts_score, sat_score, grad_time, study_period, grace_period, ug_score, class_12_score,
                           class_10_score,
                           co_borrower_entity, co_borrower_location, co_borrower_accommodation, co_borrower_relationship,
-                          foir, iir, income_profile, cibil_status, cibil_grid)
+                          income_profile, partial_interest_amount, cibil_status, cibil_grid, personal_loan, home_loan)
     eligible_products = applicant.check_loan_eligibility()
 
-    if len(eligible_products) == 0:
+    if applicant.ineligible_all and applicant.partial_interest_amount < 2000:
         print()
         print("Dear " + applicant.name + ", you are not eligible for any of our loan offerings. We'll get back "
                                          "to you in case of future offerings.")
@@ -148,7 +232,7 @@ def main():
     else:
         print()
         print("Dear " + applicant.name + ", you are eligible for our following loan offerings")
-        print_products(eligible_products, monthly_income)
+        print_products(applicant, eligible_products)
 
     print()
     print("********* Thank you for choosing to work with Kuhoo! *********")
